@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     # 4. Y Gradient
     img4 = functions.filter_custom(img, [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
-    #img4 = cv2.Sobel(img, -1, 0, 1) #alernativ
+    #img4 = cv2.Sobel(img, -1, 0, 1) #alternativ
     images.append(["Y_Gradient", img4])
 
     # 5. LaPlace
