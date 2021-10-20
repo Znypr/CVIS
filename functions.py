@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
 
+
 w, h = 600, 300
+
 
 def set_window_size(width,height):
     global w, h
@@ -24,17 +26,19 @@ def save(images, type, folder):
         path = "img/" + folder +"/"+ folder + "_" + images[i][0] + "." + type
         cv2.imwrite(path, images[i][1])
 
+
 # FILTER
+
+def sharpen(img):
+    kernel = np.array([[0, -1, 0],
+                       [-1, 5, -1],
+                       [0, -1, 0]])
+    return cv2.filter2D(img, -1, kernel)
 
 def blur(img, x):
     kernel = np.ones((x,x))/x**2
-
-    filtered = cv2.filter2D(img, -1, kernel)
-
-    return filtered
+    return cv2.filter2D(img, -1, kernel)
 
 def filter_custom(img, matrix):
     kernel = np.array(matrix)
-
-    filtered = cv2.filter2D(img, -1, kernel)
-    return filtered
+    return cv2.filter2D(img, -1, kernel)
