@@ -2,23 +2,19 @@ import cv2
 import functions
 import numpy as np
 
-
-
 if __name__ == '__main__':
-
     images = []
-    img = cv2.imread("img/bicycle/bike.png", 0)
+    img = cv2.imread("img/bicycle/bike.png", 1)
     images.append(["original", img])
 
-    img1 = cv2.Canny(img, 0,255)
-    images.append(["canny", img1])
+    img2 = cv2.Canny(img, 100, 200)
+    images.append(["canny-1", img2])
 
-    img2 = cv2.Canny(img, 0, 255, apertureSize=5)
-    images.append(["canny-aperture_5", img2])
+    img3 = cv2.Canny(img, 200, 200)
+    images.append(["canny-2", img3])
 
-    img3 = cv2.Canny(img, 0, 255, L2gradient=True)
-    images.append(["canny-L2_true", img3])
-
+    img4 = cv2.Canny(img, 100, 100)
+    images.append(["canny-3", img4])
 
     functions.save(images, "png", "bicycle")
     functions.show(images)
