@@ -38,7 +38,7 @@ if __name__ == '__main__':
     #amount_matches2 = functions.match_keypoints(set2, descriptor2, keypoints2, amount_matches=30)
     #functions.print_matches("set-2", amount_matches2)
 
-    amount_matches3 = functions.match_keypoints(set3, descriptor3, keypoints3, threshold=0.7)
+    amount_matches3 = functions.match_keypoints(set3, descriptor3, keypoints3, amount_matches=30)
     functions.print_matches("set-3", amount_matches3)
 
 

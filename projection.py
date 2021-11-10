@@ -93,7 +93,8 @@ if __name__ == '__main__':
     p2 = [33, 22, 111]
     p3 = [100, 100, 1000]
     p4 = [20,-100, 100]
-    points = get_homogenous_points([p1, p2, p3, p4])
+    kartesic_points = [p1, p2, p3, p4]
+    points = get_homogenous_points(kartesic_points)
 
     K = get_cameramatrix(fx, fy, cx, cy)
     P = get_projection(K)
@@ -103,17 +104,19 @@ if __name__ == '__main__':
     projected_points_3d = project(points, P)
     projected_points_2d = compress_dimension(projected_points_3d)
 
-    #print(projected_points_2d)
-    #print(contains(projected_points_2d, canvas))
+    print(projected_points_2d)
+    print(contains(projected_points_2d, canvas))
+
 
     # TASK 2
-    R=t=np.zeros(3)
-    K = np.array(K)
-    points = np.array(points)
+    points = np.float32(kartesic_points)
+    points = np.transpose(points)
+    R, t= np.eye(3), np.zeros(3)
+    K = np.float32(K)
 
-    distCoeffs = np.zeros(4)
-    #distCoeffs = None
+    distCoeffs = None
 
-    output = np.zeros((4,2))
+    output = np.zeros((2,4))
 
-    cv2.projectPoints(points, R, t, K, distCoeffs, output)
+    projected_points = cv2.projectPoints(points, R, t, K, distCoeffs)
+    print(projected_points)
