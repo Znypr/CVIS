@@ -74,7 +74,8 @@ def match_keypoints(set, descriptors, keypoints, amount_matches=None, threshold=
 
     matched = None
     if threshold:
-        match_percentage = len(matches) / ((len(keypoints[0]) + len(keypoints[1])) / 2)
+        amount_keypoints = len(keypoints[0]) if len(keypoints[0])<len(keypoints[1]) else len(keypoints[1])
+        match_percentage = len(matches) / amount_keypoints
         matched = True if match_percentage >= threshold else False
         print("\n\nThe two picture {}. ({}%)".format("match" if matched else "dont match", round(match_percentage*100),2))
     else:
@@ -85,7 +86,7 @@ def match_keypoints(set, descriptors, keypoints, amount_matches=None, threshold=
     return matches
 
 def to_sift(set):
-    sift = []
+    sift_images = []
     descriptors = []
     keypoints = []
 
@@ -94,11 +95,11 @@ def to_sift(set):
         keypoint, descriptor = siftobject.detectAndCompute(set[i], None)
         gray_scale = cv2.cvtColor(set[i], cv2.COLOR_BGR2GRAY)
 
-        sift.append(cv2.drawKeypoints(gray_scale, keypoint, None))
+        sift_images.append(cv2.drawKeypoints(gray_scale, keypoint, None))
         descriptors.append(descriptor)
         keypoints.append(keypoint)
 
-    return sift, descriptors, keypoints
+    return sift_images, descriptors, keypoints
 
 def print_keypoints(set_name, keypoints):
     print("\nKeypoints in {}:".format(set_name))
