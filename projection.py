@@ -49,7 +49,7 @@ def project(points, P):
 
     return projected_points
 
-def compress_dimension(points_nd):
+def homogenous_to_cartesic(points_nd):
     # points_nd := points with n dimensions
     # pints_nminus1d := points with (n-1) dimensions
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
     # points
     p1 = [10, 10, 100]
-    p2 = [33, 22, 111]
+    p2 = [33, 22, 111] #rounding
     p3 = [100, 100, 1000]
     p4 = [20,-100, 100]
     kartesic_points = [p1, p2, p3, p4]
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     # TASK 1
     projected_points_3d = project(points, P)
-    projected_points_2d = compress_dimension(projected_points_3d)
+    projected_points_2d = homogenous_to_cartesic(projected_points_3d)
 
     print(projected_points_2d)
     print(contains(projected_points_2d, canvas))
@@ -111,12 +111,12 @@ if __name__ == '__main__':
     # TASK 2
     points = np.float32(kartesic_points)
     points = np.transpose(points)
+
     R, t= np.eye(3), np.zeros(3)
     K = np.float32(K)
 
     distCoeffs = None
 
-    output = np.zeros((2,4))
-
     projected_points = cv2.projectPoints(points, R, t, K, distCoeffs)
+
     print(projected_points)

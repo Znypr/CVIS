@@ -1,4 +1,5 @@
 import os
+import copy
 import cv2
 import numpy as np
 import math
@@ -95,7 +96,9 @@ def to_sift(set):
         keypoint, descriptor = siftobject.detectAndCompute(set[i], None)
         gray_scale = cv2.cvtColor(set[i], cv2.COLOR_BGR2GRAY)
 
-        sift_images.append(cv2.drawKeypoints(gray_scale, keypoint, None))
+        img = copy.copy(set[i])
+        cv2.drawKeypoints(gray_scale, keypoint, img, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        sift_images.append(img)
         descriptors.append(descriptor)
         keypoints.append(keypoint)
 
