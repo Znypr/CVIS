@@ -23,11 +23,11 @@ images = glob.glob('img/chess/*.jpg')
 
 for image in images:
 
-    # 1 Reading
+    # 1.1 Reading
     img = cv2.imread(image)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # 2 Detect Corners
+    # 1.2 Detect Corners
     successful_retrieval, corners = cv2.findChessboardCorners(
         gray,
         (chessboard.x, chessboard.y),
@@ -40,7 +40,7 @@ for image in images:
         # corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1,
         # -1), criteria)
 
-        # 3 Display Corners
+        # 1.3 Display Corners
         cv2.drawChessboardCorners(
             img,
             (chessboard.x, chessboard.y),
@@ -52,7 +52,7 @@ for image in images:
 
 # cv2.destroyAllWindows()
 
-# 4 Calibration
+# 1.4 Calibration
 error, K, distCoeffs, R, t = cv2.calibrateCamera(
     vectors_3d,
     vectors_2d,
@@ -60,6 +60,14 @@ error, K, distCoeffs, R, t = cv2.calibrateCamera(
     None,
     None
 )
+
+# 2.2
+fx, cx = 460, 310
+fx = input("fx:") # 460
+cx = input("cx:") # 310
+K[0][0] = fx
+K[0][2] = cx
+
 output = {
     "error": error, "K": K, "distCoeffs": distCoeffs, "R": R[0],
     "t":     t[0]
@@ -67,7 +75,9 @@ output = {
 for k, v in output.items():
     print("\n\t{}\n{}".format(k, v))
 
-# 5
+
+
+# 1.5
 corners_3d = objv
 
 for i in range(len(images)):
@@ -83,5 +93,5 @@ for i in range(len(images)):
         successful_retrieval
     )
     cv2.imshow("test", img)
-    cv2.waitKey(50)
+    cv2.waitKey(0)
 cv2.destroyAllWindows()
