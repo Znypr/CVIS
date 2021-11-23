@@ -1,3 +1,4 @@
+import copy
 import os
 import cv2
 import numpy as np
@@ -110,3 +111,31 @@ def print_keypoints(set_name, keypoints):
 
 def print_matches(set_name, matches):
     print("\n{} matches in {}".format(len(matches), set_name))
+
+
+def apply_kernel(img, kernel):
+    result = copy.deepcopy(img)
+    for y in range(len(kernel)):
+        for x in range(len(kernel)):
+
+            v = 0
+            for a in range(len(kernel)):
+                for b in range(len(kernel)):
+
+                    k = kernel[a][b]
+                    d = len(kernel)//2
+                    y1, x1 = y-d+a, x-d+b
+                    if x1>=0 and x1<=len(img)-1 and y1>=0 and y1<=len(img)-1:
+                        v += img[y1][x1]*k
+                    else:
+                        0 # zero-padding
+
+            result[y][x] = v
+
+    return result
+
+if __name__ == '__main__':
+    i = np.ones((3,3))
+    k = np.eye(3)
+    r = apply_kernel(i, k)
+    print(r)
