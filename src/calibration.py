@@ -19,7 +19,7 @@ objv[:, :2] = np.mgrid[:chessboard.x, :chessboard.y].T.reshape(-1, 2)
 vectors_3d = []  # 3d vector in real world space
 vectors_2d = []  # 2d vector in image plane
 
-images = glob.glob('img/chess/*.jpg')
+images = glob.glob('../img/chess/*.jpg')
 
 for image in images:
 
@@ -93,5 +93,5 @@ for i in range(len(images)):
         successful_retrieval
     )
     cv2.imshow("test", img)
-    cv2.waitKey(0)
+cv2.waitKey(0)
 cv2.destroyAllWindows()

@@ -4,18 +4,6 @@ import cv2
 import numpy as np
 
 
-def mutiply_vector_matrix (point, P):
-    projected_point = []
-
-    for i in range(len(P)):
-        dim_i = 0
-        for j in range(len(P[0])):
-            dim_i += P[i][j] * point[j]
-        projected_point.append(dim_i)
-
-    return projected_point
-
-
 def get_homogenous_points (kartesic_points):
     homogenous_points = copy.deepcopy(kartesic_points)
 
@@ -29,23 +17,21 @@ def get_cameramatrix (fx, fy, cx, cy):
     return [[fx, 0, cx], [0, fy, cy], [0, 0, 1]]
 
 
-def get_projection (K, R = None, t = (0, 0, 0)):
-    P = copy.deepcopy(K)
+def get_projection (K, R = None, t = np.zeros((3,1))):
 
-    if R:
-        0
+    if(R):
+        P = K.dot(R)
+        return np.hstack((P, t))
     else:
-        for i in range(len(P)):
-            P[i].append(t[i])
+        return np.hstack((K, t))
 
-    return P
 
 
 def project (points, P):
     projected_points = []
 
     for point in points:
-        p = mutiply_vector_matrix(point, P)
+        p = P.dot(point)
         projected_points.append(p)
 
     return projected_points

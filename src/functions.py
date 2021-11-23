@@ -5,7 +5,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-w, h = 500, 500
+w, h = 640, 360
 
 
 def set_window_size(width, height):
