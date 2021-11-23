@@ -117,7 +117,6 @@ def apply_kernel(img, kernel):
     result = copy.deepcopy(img)
     for y in range(len(kernel)):
         for x in range(len(kernel)):
-
             v = 0
             for a in range(len(kernel)):
                 for b in range(len(kernel)):
