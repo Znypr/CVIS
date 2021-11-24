@@ -4,7 +4,7 @@ import numpy as np
 from numpy import median
 
 
-def convert_kernel_to_binary (img, t):
+def convert_img_to_binary (img, t):
     for x in range(len(img)):
         for y in range(len(img)):
             if img[y][x] >= t:
@@ -61,7 +61,11 @@ def get_projection_matrix (
 
 
 def get_calibrationmatrix (fx, fy, cx, cy):
-    return np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]])
+    return np.array(
+        [[fx, 0, cx],
+         [0, fy, cy],
+         [0, 0, 1]]
+    )
 
 
 def project_point (p, P):
@@ -71,13 +75,14 @@ def project_point (p, P):
 def homogenous_to_kartesian (p):
     k = []
     for dim in p:
-        k.append(dim / p[len(p) - 1])
+        k.append(round(dim / p[len(p) - 1]))
     k.pop()
     return k
 
 
 def point_in_canvas (p, canvas):
-    return p[0] <= canvas[0] and p[1] <= canvas[1]
+    return p[0] <= canvas[0] and p[1] <= canvas[1] \
+           and p[0] >= 0 and p[1] >= 0
 
 
 if __name__ == '__main__':
@@ -87,23 +92,23 @@ if __name__ == '__main__':
     coefficient = 1 / 9
     threshold = 5
 
-    canvas = (640, 240)
-    fx, fy = 10, 10
-    cx, cy = 20, 20
+    canvas = (640, 480)
+    fx, fy = 460, 460
+    cx, cy = 320, 240
     K = get_calibrationmatrix(fx, fy, cx, cy)
 
     R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     t = np.array([[1], [2], [3]])
 
-    P = get_projection_matrix(K, R, t)
+    P = get_projection_matrix(K)
 
-    point = np.array([1, 1, 1, 1])
+    point = np.array([50,10,110, 1])  # homogenous 3D point
 
     # Bild mit Maske filtern (RETURN: filtered img)
     r1 = apply_kernel_to_img(img, kernel, coefficient)
 
     # Binärbild bestimmen (RETURN: Binärbild)
-    r2 = convert_kernel_to_binary(img, threshold)
+    r2 = convert_img_to_binary(img, threshold)
 
     # Maske auf Summe 1 prüfen (RETURN: boolean)
     r3 = kernel_is_normalized(img, coefficient)
@@ -111,16 +116,16 @@ if __name__ == '__main__':
     # Hauptpixel nach Median filtern (RETURN: img, median)
     r4, r5 = filter_median(img)
 
-    # Bestimme Projektionsmatrix
+    # Bestimme Projektionsmatrix (RETURN: P)
     r6 = get_projection_matrix(K, R, t)
 
-    # homogenen Punkt projektieren
+    # homogenen Punkt projektieren (RETURN: 2D-homogenous point)
     r7 = project_point(point, P)
 
-    # kartesischen Punkt bestimmen
+    # kartesischen Punkt bestimmen (RETURN: 2D-kartesian point)
     r8 = homogenous_to_kartesian(r7)
 
-    # liegt Punkt im Bild?
+    # liegt Punkt im Bild? (RETURN: boolean)
     r9 = point_in_canvas(r8, canvas)
 
-    print(r9)
+    print(P, r7, r8, r9)

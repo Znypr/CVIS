@@ -6,7 +6,7 @@ if __name__ == '__main__':
     images = []
 
     img = cv2.imread("../img/chess/left2.jpg", 1)
-    # images.append(["Original", img])
+    images.append(["Original", img])
 
     # 1. 5x5 Smoothing
     # img1 = functions.blur(img, 5)
@@ -18,8 +18,9 @@ if __name__ == '__main__':
 
     # 3. X Gradient
     img3 = functions.filter_custom(
-        img, [[0, -1, 0],  # Prewitt top>bottom
-              [-1, -1, 1], [0, 1, 0]]
+        img, [[-1, 0, 1],  # Prewitt top>bottom
+              [-1, 0, 1],
+              [-1, 0, 1]]
     )
 
     # img3 = cv2.Sobel(img, -1, 1, 0) #Sobel
