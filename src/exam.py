@@ -91,11 +91,13 @@ if __name__ == '__main__':
     fx, fy = 10, 10
     cx, cy = 20, 20
     K = get_calibrationmatrix(fx, fy, cx, cy)
+
     R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     t = np.array([[1], [2], [3]])
+
     P = get_projection_matrix(K, R, t)
 
-    p = np.array([1, 1, 1, 1])
+    point = np.array([1, 1, 1, 1])
 
     # Bild mit Maske filtern (RETURN: filtered img)
     r1 = apply_kernel_to_img(img, kernel, coefficient)
@@ -113,11 +115,12 @@ if __name__ == '__main__':
     r6 = get_projection_matrix(K, R, t)
 
     # homogenen Punkt projektieren
-    r7 = project_point(p, P)
+    r7 = project_point(point, P)
 
     # kartesischen Punkt bestimmen
     r8 = homogenous_to_kartesian(r7)
 
+    # liegt Punkt im Bild?
     r9 = point_in_canvas(r8, canvas)
 
     print(r9)
