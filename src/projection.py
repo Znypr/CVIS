@@ -80,11 +80,9 @@ if __name__ == '__main__':
     ## => no rotation/translation
 
     # points
-    p1 = [10, 10, 100]
-    p2 = [33, 22, 111]  # rounding
-    p3 = [100, 100, 1000]
-    p4 = [20, -100, 100]
-    kartesic_points = [p1, p2, p3, p4]
+    p1 = [1, 2, 3]
+    p2 = [2, 2, 2]  # rounding
+    kartesic_points = [p1, p2]
     points = get_homogenous_points(kartesic_points)
 
     K = get_cameramatrix(fx, fy, cx, cy)
@@ -95,7 +93,7 @@ if __name__ == '__main__':
     projected_points_2d = homogenous_to_cartesic(projected_points_3d)
 
     print(projected_points_2d)
-    print(contains(projected_points_2d, canvas))
+    #print(contains(projected_points_2d, canvas))
 
     # TASK 2
     points = np.float32(kartesic_points)
@@ -108,4 +106,4 @@ if __name__ == '__main__':
 
     projected_points = cv2.projectPoints(points, R, t, K, distCoeffs)
 
-    print(projected_points)
+    #print(projected_points)

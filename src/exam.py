@@ -23,7 +23,7 @@ def kernel_is_normalized (kernel, coef = 1.):
     return sum * coef == 1
 
 
-def apply_kernel_to_img (img, kernel, coef):
+def apply_kernel_to_img (img, kernel, coef = 1):
     result = copy.deepcopy(img)
     for y in range(len(kernel)):
         for x in range(len(kernel)):
@@ -87,9 +87,12 @@ def point_in_canvas (p, canvas):
 
 if __name__ == '__main__':
 
-    img = [[10, 4, 3], [4, 6, 1], [1, 1, 8]]
-    kernel = np.ones((3, 3))
-    coefficient = 1 / 9
+    # DEFINITIONS
+
+    img = [[1, 4, 9], [2, 9, 1], [6, 1, 3]]
+    mask = np.ones((3, 3))
+    #mask = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+    coefficient = 1/9
     threshold = 5
 
     canvas = (640, 480)
@@ -100,12 +103,19 @@ if __name__ == '__main__':
     R = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     t = np.array([[1], [2], [3]])
 
-    P = get_projection_matrix(K)
+    P = get_projection_matrix(K, R, t)  # extrinsic relevant
+    # P = get_projection_matrix(K)  # extrinsic irrelevant
+    P = np.array(
+        [[0, -510, 320, 1850], [520, 0, 240, 1280], [0, 0, 1,
+                                                     1]]
+    )
 
-    point = np.array([50,10,110, 1])  # homogenous 3D point
+    point = np.array([2, 2, 2, 1])  # homogenous 3D point
+
+    # FUNCTIONS CALL
 
     # Bild mit Maske filtern (RETURN: filtered img)
-    r1 = apply_kernel_to_img(img, kernel, coefficient)
+    r1 = apply_kernel_to_img(img, mask, coefficient)
 
     # Binärbild bestimmen (RETURN: Binärbild)
     r2 = convert_img_to_binary(img, threshold)
@@ -117,7 +127,7 @@ if __name__ == '__main__':
     r4, r5 = filter_median(img)
 
     # Bestimme Projektionsmatrix (RETURN: P)
-    r6 = get_projection_matrix(K, R, t)
+    r6 = P
 
     # homogenen Punkt projektieren (RETURN: 2D-homogenous point)
     r7 = project_point(point, P)
@@ -128,4 +138,7 @@ if __name__ == '__main__':
     # liegt Punkt im Bild? (RETURN: boolean)
     r9 = point_in_canvas(r8, canvas)
 
-    print(P, r7, r8, r9)
+    # RESULTS
+
+    print(P, r7, r8, r9, "\n")
+    print(r1, "\n")
